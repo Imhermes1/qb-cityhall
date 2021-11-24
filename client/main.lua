@@ -40,22 +40,29 @@ end)
 
 local inRange = false
 
-CreateThread(function()
+Citizen.CreateThread(function()
     CityhallBlip = AddBlipForCoord(Config.Cityhall.coords)
+
     SetBlipSprite (CityhallBlip, 487)
     SetBlipDisplay(CityhallBlip, 4)
     SetBlipScale  (CityhallBlip, 0.65)
     SetBlipAsShortRange(CityhallBlip, true)
     SetBlipColour(CityhallBlip, 0)
+
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentSubstringPlayerName("City Services")
     EndTextCommandSetBlipName(CityhallBlip)
 end)
 
+RegisterNetEvent ('QBJobs')
+AddEventHandler('QBJobs', function()
+
+    qbCityhall.Open()
+end)
+
 local creatingCompany = false
 local currentName = nil
-
-CreateThread(function()
+Citizen.CreateThread(function()
     while true do
 
         local ped = PlayerPedId()
@@ -67,28 +74,30 @@ CreateThread(function()
 
         if dist < 20 then
             inRange = true
-            DrawMarker(2, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
-            if #(pos - vector3(Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z)) < 1.5 then
-                DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - City Services Menu')
-                if IsControlJustPressed(0, 38) then
-                    qbCityhall.Open()
+        --    DrawMarker(2, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
+        if #(pos - vector3(Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z)) < 1.5 then
+            --DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - City Services Menu')
+            if IsControlJustPressed(0, 38) then
+    --            qbCityhall.Open()
                 end
             end
         end
 
         if not inRange then
-            Wait(1000)
+            Citizen.Wait(1000)
         end
 
-        Wait(2)
+        Citizen.Wait(2)
     end
 end)
 
-RegisterNetEvent('qb-cityhall:client:getIds', function()
+RegisterNetEvent('qb-cityhall:client:getIds')
+AddEventHandler('qb-cityhall:client:getIds', function()
     TriggerServerEvent('qb-cityhall:server:getIDs')
 end)
 
-RegisterNetEvent('qb-cityhall:client:sendDriverEmail', function(charinfo)
+RegisterNetEvent('qb-cityhall:client:sendDriverEmail')
+AddEventHandler('qb-cityhall:client:sendDriverEmail', function(charinfo)
     SetTimeout(math.random(2500, 4000), function()
         local gender = "Mr"
         if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then

@@ -1,8 +1,11 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local DrivingSchools = {}
+local DrivingSchools = {
 
-RegisterNetEvent('qb-cityhall:server:requestId', function(identityData)
+}
+
+RegisterServerEvent('qb-cityhall:server:requestId')
+AddEventHandler('qb-cityhall:server:requestId', function(identityData)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local info = {}
@@ -29,12 +32,16 @@ RegisterNetEvent('qb-cityhall:server:requestId', function(identityData)
     Player.Functions.RemoveMoney("cash", 50)
 end)
 
-RegisterNetEvent('qb-cityhall:server:getIDs', function()
+
+RegisterServerEvent('qb-cityhall:server:getIDs')
+AddEventHandler('qb-cityhall:server:getIDs', function()
     local src = source
     GiveStarterItems(src)
 end)
 
-RegisterNetEvent('qb-cityhall:server:sendDriverTest', function()
+
+RegisterServerEvent('qb-cityhall:server:sendDriverTest')
+AddEventHandler('qb-cityhall:server:sendDriverTest', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     for k, v in pairs(DrivingSchools) do
@@ -61,6 +68,7 @@ local AvailableJobs = {
     "reporter",
     "garbage",
     "bus",
+    "burgershot",
 }
 
 function IsAvailableJob(job)
@@ -73,7 +81,8 @@ function IsAvailableJob(job)
     return retval
 end
 
-RegisterNetEvent('qb-cityhall:server:ApplyJob', function(job)
+RegisterServerEvent('qb-cityhall:server:ApplyJob')
+AddEventHandler('qb-cityhall:server:ApplyJob', function(job)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Ped = GetPlayerPed(src)
@@ -87,6 +96,7 @@ RegisterNetEvent('qb-cityhall:server:ApplyJob', function(job)
     Player.Functions.SetJob(job, 0)
     TriggerClientEvent('QBCore:Notify', src, 'Congratulations with your new job! ('..JobInfo.label..')')
 end)
+
 
 -- QBCore.Commands.Add("drivinglicense", "Give a driver's license to someone", {{"id", "ID of a person"}}, true, function(source, args)
 --     local Player = QBCore.Functions.GetPlayer(source)
@@ -141,7 +151,8 @@ function IsWhitelistedSchool(citizenid)
     return retval
 end
 
-RegisterNetEvent('qb-cityhall:server:banPlayer', function()
+RegisterServerEvent('qb-cityhall:server:banPlayer')
+AddEventHandler('qb-cityhall:server:banPlayer', function()
     local src = source
     TriggerClientEvent('chatMessage', -1, "QB Anti-Cheat", "error", GetPlayerName(src).." has been banned for sending POST Request's ")
     exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {

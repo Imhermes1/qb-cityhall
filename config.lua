@@ -3,7 +3,7 @@ Config = Config or {}
 Config.CompanyPrice = 25000
 
 Config.Cityhall = {
-    coords = vector3(-265.0, -963.6, 31.2)
+    coords = vector3(-547.34, -200.32, 38.22)
 }
 
 Config.DriverTest = {
@@ -11,5 +11,5 @@ Config.DriverTest = {
 }
 
 Config.DrivingSchool = {
-    coords = vector3(232.5, 368.7, 105.94)
+    coords = vector3(215.21, -1398.96, 30.58)
 }
